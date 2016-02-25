@@ -1,6 +1,5 @@
 package virtual.pathfinder.domain.model;
 
-public class Item {
+public interface Item {
 
-	
 }

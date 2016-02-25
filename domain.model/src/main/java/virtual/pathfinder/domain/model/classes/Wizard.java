@@ -1,4 +1,9 @@
-package virtual.pathfinder.domain.model;
+package virtual.pathfinder.domain.model.classes;
+
+import virtual.pathfinder.domain.model.Character;
+import virtual.pathfinder.domain.model.Save;
+import virtual.pathfinder.domain.model.Save.Name;
+import virtual.pathfinder.domain.model.Save.Progression;
 
 public class Wizard extends Character{
 
