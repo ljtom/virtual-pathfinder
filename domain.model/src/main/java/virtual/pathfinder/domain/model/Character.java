@@ -11,7 +11,8 @@ public abstract class Character {
 	protected Attribute wisdom;
 	protected Attribute charisma;
 	protected Race race;
-		
+	protected Feat feat;
+	protected Alignment alignment;
 	private Equipment equipment;	
 	
 	//transient fields, calculated in constructor
@@ -24,7 +25,7 @@ public abstract class Character {
 	
 	protected Character() {	/*should never be used, it is here only for hibernate, characters should be created using constructors with properties*/}
 	
-	public Character(Race race, Attribute strength, Attribute dexterity, Attribute constitution, Attribute intelligence, Attribute wisdom, Attribute charisma) {
+	public Character(Race race, Alignment alignment, Attribute strength, Attribute dexterity, Attribute constitution, Attribute intelligence, Attribute wisdom, Attribute charisma) {
 		this.race = race;
 		this.strength = strength;
 		this.dexterity = dexterity;
@@ -32,6 +33,7 @@ public abstract class Character {
 		this.intelligence = intelligence;
 		this.wisdom = wisdom;
 		this.charisma = charisma;
+		this.alignment = alignment;
 		
 	}
 	
@@ -43,10 +45,10 @@ public abstract class Character {
 	}
 	
 	public int getReflexSaveValue() {
-		return fortitudeSave.getBaseValue(this);
+		return reflexSave.getBaseValue(this);
 	}
 	
 	public int getWillSaveValue() {
-		return fortitudeSave.getBaseValue(this);
+		return willSave.getBaseValue(this);
 	}
 }
