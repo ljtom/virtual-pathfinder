@@ -1,39 +1,20 @@
 package virtual.pathfinder.domain.model;
 
-public class Attribute {
+public enum Attribute {
 
-	public enum Name {
-		STRENGTH,
-		DEXTERITY,
-		CONSTITUTION,
-		INTELLIGENCE,
-		WISDOM,
-		CHARISMA;
-		
-	}
 	
-	private int value;
-	private Name name;
+	STRENGTH,
+	DEXTERITY,
+	CONSTITUTION,
+	INTELLIGENCE,
+	WISDOM,
+	CHARISMA;
+	
 	
 
-	public Attribute(int value, Name name) {
-		super();
-		this.value = value;
-		this.name = name;
-	}
-
-
-	public int getValue() {
-		return value;
-	}
-
-
-	public Name getName() {
-		return name;
-	}
-
-
-	public int getModifier() {
+	public static int getModifier(int value) {
 		return (value-10)/2;
 	}
+	
+	
 }

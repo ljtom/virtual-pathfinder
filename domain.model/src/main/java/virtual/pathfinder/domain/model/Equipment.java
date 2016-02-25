@@ -47,4 +47,31 @@ public class Equipment {
 	List<Slotless> slotless; //example ioun stones
 	
 	List<Item> backpack;
+	
+	public void equip(Item item) {
+		//TODO:
+	}
+	
+	public void unequip(Item item) {
+		//TODO:
+	}
+	
+	public boolean checkEquipped(Item item) {
+		//TODO:
+		return false;
+	}
+	
+	public void putInBackpack(Item item) {
+		backpack.add(item);
+	}
+	public void removeFromBackpack(Item item) {
+		backpack.remove(item);
+	}
+	
+	public boolean checkInBackpack(Item item) {
+		return backpack.contains(item);
+	}
+	
+	
+	
 }
