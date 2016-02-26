@@ -26,5 +26,9 @@ public class Human extends Race {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	@Override
+	public int getBaseSpeed() {
+		return 30;
+	}
 
 }
