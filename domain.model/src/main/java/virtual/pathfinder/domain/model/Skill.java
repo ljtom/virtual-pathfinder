@@ -1,5 +1,7 @@
 package virtual.pathfinder.domain.model;
 
+import virtual.pathfinder.domain.model.CharacterAttributes.Attribute;
+
 public class Skill {
 	
 	public enum Name {

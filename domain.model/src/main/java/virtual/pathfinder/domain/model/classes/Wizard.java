@@ -31,7 +31,7 @@ public class Wizard extends Character{
 	}
 
 	@Override
-	protected Set<Skill.Name> getClassSkills() {
+	protected Set<Skill.Name> createClassSkills() {
 		return classSkills;
 	}
 	

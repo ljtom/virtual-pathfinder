@@ -1,5 +1,24 @@
 package virtual.pathfinder.domain.model;
 
-public class Race {
+import java.util.Map;
+import java.util.Set;
+
+import virtual.pathfinder.domain.model.CharacterAttributes.Attribute;
+
+public abstract class Race {
+	
+	Map<Attribute, Integer> attributeModifiers = initializeAttributeModifiers();
+	Set<RacialTrait> traits = defaultRacialTraits();
+	
+	protected abstract Map<Attribute, Integer> initializeAttributeModifiers();
+
+	protected abstract Set<RacialTrait> defaultRacialTraits();
+	
+	protected abstract Set<RacialTrait> alternateRacialTraits();
+
+	public int getRacialBonus(Attribute attribute) {
+		Integer racialMod = attributeModifiers.get(attribute);
+		return racialMod == null ? 0 : racialMod;
+	}
 
 }

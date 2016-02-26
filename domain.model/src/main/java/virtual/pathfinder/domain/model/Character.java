@@ -1,24 +1,22 @@
 package virtual.pathfinder.domain.model;
 
+import java.util.List;
 import java.util.Set;
+
+import virtual.pathfinder.domain.model.CharacterAttributes.Attribute;
 
 
 public abstract class Character {
 
-	protected int strength;
-	protected int dexterity;
-	protected int constitution;
-	protected int intelligence;
-	protected int wisdom;
-	protected int charisma;
+	private CharacterAttributes attributes;
+	private Race race;	
 	
-	protected Race race;	
+	private int level;
 	
-	protected int level;
-	
-	protected Feat feat;
-	protected Alignment alignment;
+	private List<Feat> feats;
+	private Alignment alignment;
 	private Equipment equipment;
+	private Set<Skill> skills;
 	
 	
 	//transient fields, calculated in constructor
@@ -26,26 +24,21 @@ public abstract class Character {
 	protected Save fortitudeSave;
 	protected Save reflexSave;
 	
-	Set<Skill> skills;
+	
+	private Set<Skill.Name> classSkills;
 	
 	
-	Set<Proficiency> proficiencies; //calculated from list feats, race, spells etc.
+	private Set<Proficiency> proficiencies; //calculated from list feats, race, spells etc.
 	
 	protected Character() {	/*should never be used, it is here only for hibernate, characters should be created using constructors with properties*/}
 	
-	public Character(Race race, int level,  Alignment alignment, int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma) {
+	public Character(Race race, int level,  Alignment alignment, CharacterAttributes attributes) {
 		this.race = race;
 		this.level = level;
-		this.strength = strength;
-		this.dexterity = dexterity;
-		this.constitution = constitution;
-		this.intelligence = intelligence;
-		this.wisdom = wisdom;
-		this.charisma = charisma;
+		this.attributes = attributes;
 		this.alignment = alignment;
 		createSaves();
-		
-		Set<Skill.Name> classSkills = getClassSkills();
+		classSkills = createClassSkills();
 		for(Skill.Name skillName : Skill.Name.values()) {
 			Skill skill = new Skill(skillName, classSkills.contains(skillName));
 			skills.add(skill);
@@ -55,22 +48,22 @@ public abstract class Character {
 	
 	protected abstract void createSaves(); 
 	
-	protected abstract Set<Skill.Name> getClassSkills(); 
+	protected abstract Set<Skill.Name> createClassSkills();
 	
 	
-	public int getFortitudeSaveValue() {
+	public int getFortitudeSave() {
 		int value = fortitudeSave.getBaseValue(this);
 		//TODO: calculate bonuses from spells, equipment abilites etc.
 		return value;
 	}
 	
-	public int getReflexSaveValue() {
+	public int getReflexSave() {
 		int value = reflexSave.getBaseValue(this);
 		//TODO: calculate bonuses from spells, equipment abilites etc.
 		return value;
 	}
 	
-	public int getWillSaveValue() {
+	public int getWillSave() {
 		int value = willSave.getBaseValue(this);
 		//TODO: calculate bonuses from spells, equipment abilites etc.
 		return value;
@@ -81,27 +74,14 @@ public abstract class Character {
 	}
 	
 	public int getAttributeValue(Attribute attribute) {
-		int value = 0;
-		switch(attribute) {
-			case STRENGTH:
-				value = strength;
-			case DEXTERITY:
-				value = dexterity;
-			case CONSTITUTION:
-				value = constitution;
-			case INTELLIGENCE:
-				value = intelligence;
-			case WISDOM:
-				value = wisdom;
-			case CHARISMA:
-				value = charisma;
-		}
+		int value = attributes.getValue(attribute);
+		value+=race.getRacialBonus(attribute);
 		//TODO: apply any racial, equipment, spell, feat or other bonuses
 		return value;
 	}
 	
 	public int getAttributeModifier(Attribute attribute) {
-		return Attribute.getModifier(getAttributeValue(attribute));
+		return CharacterAttributes.getModifier(getAttributeValue(attribute));
 	}
 	
 	public void increaseSkillRanks(Skill.Name name, int byValue) {
@@ -121,12 +101,15 @@ public abstract class Character {
 	}
 	
 	public Skill getSkill(Skill.Name name) {
+		if (classSkills == null) {
+			classSkills = createClassSkills();
+		}
 		for (Skill skill : skills) {
 			if (skill.getName().equals(name)) {
 				return skill;
 			}
 		}
-		Skill skill = new Skill(name, getClassSkills().contains(name));
+		Skill skill = new Skill(name, classSkills.contains(name));
 		skills.add(skill);
 		return skill;
 	}
